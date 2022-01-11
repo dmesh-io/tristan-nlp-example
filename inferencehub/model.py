@@ -1,5 +1,9 @@
+from typing import Dict
 
+import torch
+from torch import nn
 from transformers import AutoTokenizer, AutoModelForCausalLM
+
 class ModelWrapper(nn.Module):
 
     def __init__(self, weights_path:str, parameters: Dict, device: str):
