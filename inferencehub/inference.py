@@ -1,10 +1,3 @@
-
-# if you need to import some package use from github_repo.<filename>
-# Example: You have on the root of your repository the file transformations.py with the function normalize
-# to import here here you should use: from github_repo.transformations import normalize
-
-import torch
-import numpy as np
 import note_seq
 
 NOTE_LENGTH_16TH_120BPM = 0.25 * 60 / 120
@@ -110,10 +103,12 @@ def token_sequence_to_note_sequence(token_sequence, use_program=True, use_drums=
 
     return note_sequence
 
-def preprocess_function(input_payload, model, input_parameters: dict):
-    return input_payload
+
+def preprocess_function(input_payload, model):
+    return model.get('tokenizer').encode(input_payload, return_tensors="pt")
 
 
-def postprocess_function(image_torch: torch.tensor) -> torch.tensor:
-    note_sequence = token_sequence_to_note_sequence(image_torch)
+def postprocess_function(output, model):
+    generated_sequence = model.get('tokenizer').decode(output[0])
+    note_sequence = token_sequence_to_note_sequence(generated_sequence)
     return note_sequence
