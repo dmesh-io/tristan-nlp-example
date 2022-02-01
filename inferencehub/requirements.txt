@@ -1,3 +1,2 @@
 transformers
 torch
-note_seq
