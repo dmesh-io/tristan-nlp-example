@@ -1,10 +1,22 @@
 from typing import Dict
 
 from transformers import AutoTokenizer, AutoModelForCausalLM
+import torch
+import torch.nn as nn
+
+
+class ModelWrapper(nn.Module):
+
+    def __init__(self):
+        super().__init__()
+        self.model = AutoModelForCausalLM.from_pretrained("TristanBehrens/js-fakes-4bars")
+
+    def generate(self, x: dict, input_parameters: dict) -> torch.tensor:
+        return self.model.generate(x, max_length=input_parameters['max_length'], temperature=input_parameters['temperature'])
 
 
 # We don't have the model in the repo or on inferencehub, so we need to download it
 def get_model(weights_path: str = None) -> Dict:
-    model = AutoModelForCausalLM.from_pretrained("TristanBehrens/js-fakes-4bars")
+    model = ModelWrapper()
     tokenizer = AutoTokenizer.from_pretrained("TristanBehrens/js-fakes-4bars")
     return {'model': model, 'tokenizer': tokenizer}
