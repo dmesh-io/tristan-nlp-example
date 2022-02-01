@@ -1,17 +1,16 @@
 from typing import Dict
 
 from transformers import AutoTokenizer, AutoModelForCausalLM
-import torch
-import torch.nn as nn
+from transformers.models.gpt2.modeling_gpt2 import GPT2LMHeadModel
 
 
-class ModelWrapper(nn.Module):
+class ModelWrapper(GPT2LMHeadModel):
 
     def __init__(self):
         super().__init__()
         self.model = AutoModelForCausalLM.from_pretrained("TristanBehrens/js-fakes-4bars")
 
-    def generate(self, x: dict, input_parameters: dict) -> torch.tensor:
+    def generate(self, x: dict, input_parameters: dict):
         return self.model.generate(x, max_length=input_parameters['max_length'], temperature=input_parameters['temperature'])
 
 
