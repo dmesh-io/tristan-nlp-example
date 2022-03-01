@@ -1,5 +1,9 @@
+import json
+
+
 def preprocess_function(input_payload, model):
-    return model.get('tokenizer').encode(input_payload, return_tensors="pt")
+    input_decoded = json.loads(input_payload)
+    return model.get('tokenizer').encode(input_decoded, return_tensors="pt")
 
 
 def postprocess_function(output, model):
