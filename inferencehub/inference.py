@@ -2,7 +2,7 @@ import json
 
 
 def preprocess_function(input_payload, model):
-    input_decoded = input_payload.decode("utf-8")
+    input_decoded = input_payload.read().decode("utf-8")
     return model.get('tokenizer').encode(input_decoded, return_tensors="pt")
 
 
